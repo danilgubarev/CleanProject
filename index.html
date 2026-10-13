@@ -6,10 +6,48 @@
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    
+  <div class="page">
+    <div class="glow"></div>
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="subtitle">НАША КВАРТИРА</div>
+      <h1 class="title">Уборка</h1>
+    </div>
+
+    <!-- WEEK NAV -->
+    <div class="week-row">
+      <div class="week-nav">
+        <button aria-label="Предыдущая неделя" id="prev">‹</button>
+        <div class="week-info">
+          <span class="label" id="week-title"></span>
+          <span class="dates" id="week-range"></span>
+        </div>
+        <button aria-label="Следующая неделя" id="next">›</button>
+      </div>
+
+      <div class="progress-circle">0/3</div>
+    </div>
+
+    <a class="back-link">Вернуться к текущей неделе</a>
+
+    <!-- CARDS -->
+    <div class="cards">
+
+      <!-- Кухня -->
+
+      <section id="rooms"></section>
 
 
-    <script src="script.js"></script>
+      
+
+      
+
+    </div>
+  </div>
+
+<script src="script.js"></script>
 </body>
 </html>

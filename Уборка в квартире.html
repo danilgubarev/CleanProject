@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Уборка в квартире</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  --bg:#F2F6F4; --surface:#FFFFFF; --ink:#10211C; --muted:#60756E; --line:#DCE7E2; --shadow:0 10px 30px -12px rgba(16,60,48,.25);
+  --k:#E8941A; --kon:#2B1A00; --kbg:#FFF1DA;
+  --b:#2A74BF; --bon:#fff; --bbg:#E2EFFC;
+  --h:#23825A; --hon:#fff; --hbg:#DCF3E7;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0B1411; --surface:#14221E; --ink:#E8F2EE; --muted:#8FA79E; --line:#233630; --shadow:0 10px 30px -12px rgba(0,0,0,.6);
+  --kbg:#3A2C12; --bbg:#13293D; --hbg:#12342A;}}
+:root[data-theme="dark"]{
+  --bg:#0B1411; --surface:#14221E; --ink:#E8F2EE; --muted:#8FA79E; --line:#233630; --shadow:0 10px 30px -12px rgba(0,0,0,.6);
+  --kbg:#3A2C12; --bbg:#13293D; --hbg:#12342A;}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Manrope,system-ui,sans-serif;padding-bottom:env(safe-area-inset-bottom,0px)}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+
+.hero{position:relative;overflow:hidden;color:#fff;background:linear-gradient(155deg,#0B3329 0%,#17694F 55%,#38A878 100%);padding:calc(env(safe-area-inset-top,0px) + 28px) 0 76px;border-radius:0 0 40px 40px}
+.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;filter:blur(2px)}
+.hero::before{width:260px;height:260px;right:-70px;top:-90px;background:radial-gradient(circle,rgba(255,255,255,.25),transparent 70%)}
+.hero::after{width:200px;height:200px;left:-60px;bottom:-110px;background:radial-gradient(circle,rgba(240,160,48,.45),transparent 70%)}
+.hero .wrap{position:relative;z-index:1}
+.eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;font-weight:600}
+h1{font:700 clamp(34px,9vw,52px)/1 Unbounded,Manrope,sans-serif;margin:6px 0 22px;letter-spacing:-.03em}
+.hero-row{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.switch{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.22);border-radius:99px;padding:5px}
+.switch button{width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:20px;cursor:pointer}
+.switch button:hover{background:rgba(255,255,255,.3)}
+.switch .lbl{min-width:132px;text-align:center;line-height:1.2}
+.switch b{display:block;font-weight:800}
+.switch span{font-size:13px;opacity:.8}
+.ring{position:relative;width:84px;height:84px;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:8;stroke-linecap:round}
+.ring .bg{stroke:rgba(255,255,255,.2)}
+.ring .fg{stroke:#fff;stroke-dasharray:213.6;stroke-dashoffset:213.6;transition:stroke-dashoffset .7s cubic-bezier(.2,.8,.2,1)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font:700 20px Unbounded,sans-serif}
+.back{display:block;margin:14px 0 0;background:none;border:0;color:#fff;opacity:.85;font:inherit;font-size:14px;text-decoration:underline;cursor:pointer}
+
+.rooms{display:grid;gap:14px;margin-top:-48px;position:relative;z-index:2}
+.room{--c:var(--h);--on:var(--hon);--cbg:var(--hbg);background:linear-gradient(135deg,var(--cbg),var(--surface) 70%);border:1px solid var(--line);border-radius:28px;padding:20px;box-shadow:var(--shadow);transition:transform .2s}
+.room[data-room="0"]{--c:var(--k);--on:var(--kon);--cbg:var(--kbg)}
+.room[data-room="1"]{--c:var(--b);--on:var(--bon);--cbg:var(--bbg)}
+.room .top{display:flex;align-items:center;gap:14px}
+.icon{width:64px;height:64px;border-radius:20px;background:var(--surface);display:grid;place-items:center;font-size:32px;box-shadow:inset 0 0 0 2px var(--c)}
+.room h2{margin:0;font:700 19px/1.2 Unbounded,Manrope,sans-serif;letter-spacing:-.01em}
+.who{display:flex;align-items:center;gap:8px;margin-top:6px;color:var(--muted);font-weight:600}
+.av{width:26px;height:26px;border-radius:50%;background:var(--c);color:var(--on);display:grid;place-items:center;font:700 12px Unbounded,sans-serif}
+.pill{margin-left:auto;align-self:flex-start;font-size:12px;font-weight:800;padding:5px 12px;border-radius:99px;background:var(--surface);color:var(--muted);border:1px solid var(--line);white-space:nowrap}
+.room.done .pill{background:var(--c);color:var(--on);border-color:transparent}
+.btn{width:100%;min-height:52px;margin-top:18px;border:0;border-radius:16px;background:var(--c);color:var(--on);font:800 16px Manrope,sans-serif;cursor:pointer;box-shadow:0 8px 18px -8px var(--c);transition:transform .15s}
+.btn:active{transform:scale(.98)}
+.doneRow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px;padding-top:14px;border-top:1px dashed var(--line)}
+.doneRow .t{font-weight:800}.doneRow small{display:block;font-weight:400;color:var(--muted)}
+.ghost{min-height:40px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 14px Manrope,sans-serif;cursor:pointer}
+
+h3.sec{font:700 15px Unbounded,sans-serif;margin:36px 4px 12px}
+.timeline{list-style:none;margin:0;padding:6px 18px;background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+.timeline li{position:relative;padding:12px 0 12px 22px;display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line)}
+.timeline li:last-child{border:0}
+.timeline li::before{content:"";position:absolute;left:0;top:20px;width:10px;height:10px;border-radius:50%;background:var(--c,var(--line))}
+.timeline time{color:var(--muted);font-size:14px;white-space:nowrap}
+.timeline .empty{color:var(--muted);padding-left:0}.timeline .empty::before{display:none}
+
+.shame{position:relative;overflow:hidden;margin-top:36px;padding:24px 20px;border-radius:30px;color:#FFE9E6;background:linear-gradient(160deg,#2B0E12,#561A20);box-shadow:0 20px 40px -18px rgba(120,20,30,.6)}
+.shame::after{content:"ПОЗОР";position:absolute;top:18px;right:-14px;transform:rotate(12deg);font:700 22px Unbounded,sans-serif;color:transparent;-webkit-text-stroke:2px rgba(255,120,110,.55);padding:2px 14px;border:3px solid rgba(255,120,110,.55);border-radius:10px;letter-spacing:.06em}
+.shame h3{margin:0;font:700 24px Unbounded,sans-serif}
+.shame .sub{margin:6px 0 16px;color:#F2B8B2;font-size:14px;max-width:70%}
+.cul{display:grid;grid-template-columns:auto 1fr auto;gap:2px 12px;align-items:center;padding:12px 0;border-top:1px solid rgba(255,255,255,.12)}
+.cul .rk{font-size:28px;grid-row:span 3}
+.cul b{font-size:17px}.cul .n{font:700 22px Unbounded,sans-serif;color:#FF8A80}
+.bar{grid-column:2/4;height:6px;border-radius:9px;background:rgba(255,255,255,.12);overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#FF8A80,#FF4D4D);border-radius:9px}
+.cul .what{grid-column:2/4;color:#F2B8B2;font-size:13px}
+.shame .empty{margin:0;font-weight:600}
+
+details{margin:28px 4px 0;color:var(--muted)}summary{cursor:pointer;font-size:14px}
+.names{display:grid;gap:8px;margin-top:12px}
+.names input{height:46px;padding:0 14px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}
+footer{height:48px}
+
+.conf{position:fixed;top:-12px;width:9px;height:14px;border-radius:2px;z-index:50;pointer-events:none;animation:fall var(--d) linear forwards}
+@keyframes fall{to{transform:translate(var(--x),105vh) rotate(var(--r));opacity:.9}}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #7CC4FF;outline-offset:2px}
+@media (max-width:420px){.switch .lbl{min-width:104px}.ring{width:72px;height:72px}.shame .sub{max-width:60%}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Наша квартира</div>
+    <h1>Уборка</h1>
+    <div class="hero-row">
+      <div class="switch">
+        <button id="prev" aria-label="Предыдущая неделя">‹</button>
+        <div class="lbl"><b id="weekTitle"></b><span id="weekRange"></span></div>
+        <button id="next" aria-label="Следующая неделя">›</button>
+      </div>
+      <div class="ring" aria-live="polite">
+        <svg viewBox="0 0 80 80"><circle class="bg" cx="40" cy="40" r="34"/><circle class="fg" id="fg" cx="40" cy="40" r="34"/></svg>
+        <b id="ringText"></b>
+      </div>
+    </div>
+    <button class="back" id="today" hidden>Вернуться к текущей неделе</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="rooms" id="rooms"></section>
+
+  <h3 class="sec">Что уже убрано</h3>
+  <ul class="timeline" id="history"></ul>
+
+  <section class="shame" aria-live="polite">
+    <h3>Доска позора</h3>
+    <p class="sub">Сюда попадает каждый, кто не убрался до конца своей недели.</p>
+    <div id="shame"></div>
+  </section>
+
+  <details>
+    <summary>Изменить имена</summary>
+    <div class="names" id="names"></div>
+  </details>
+  <footer></footer>
+</main>
+
+<script>
+const TASKS = ['Кухня', 'Ванная', 'Коридор и балкон'];
+const ICONS = ['🍳', '🛁', '🪴'];
+const COLORS = ['var(--k)', 'var(--b)', 'var(--h)'];
+const START_DATE = new Date('2026-10-05T00:00:00');
+const DAY = 24 * 60 * 60 * 1000, WEEK_MS = 7 * DAY;
+const KEY = 'chores:v1';
+
+let state = { names: ['Я', 'Сосед 1', 'Сосед 2'], done: {} };
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s) state = { ...state, ...s }; } catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+const currentWeek = () => Math.floor((Date.now() - START_DATE) / WEEK_MS);
+let week = currentWeek();
+
+const fmtDay = d => d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+const fmtTime = iso => new Date(iso).toLocaleString('ru-RU', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const mod = (n, m) => ((n % m) + m) % m;
+const countDone = w => assignments(w).filter(a => state.done[a.key]).length;
+
+function assignments(w) {
+  return state.names.map((person, i) => ({ person, task: mod(i + w, TASKS.length), key: w + ':' + mod(i + w, TASKS.length) }));
+}
+
+function render() {
+  const start = new Date(+START_DATE + week * WEEK_MS), end = new Date(+start + 6 * DAY);
+  const cw = currentWeek();
+  document.getElementById('weekTitle').textContent = week === cw ? 'Эта неделя' : week < cw ? 'Прошлая неделя' : 'Будущая неделя';
+  document.getElementById('weekRange').textContent = fmtDay(start) + ' – ' + fmtDay(end);
+  document.getElementById('today').hidden = week === cw;
+
+  const list = assignments(week).sort((a, b) => a.task - b.task);
+  const n = list.filter(a => state.done[a.key]).length;
+  document.getElementById('ringText').textContent = n + '/3';
+  document.getElementById('fg').style.strokeDashoffset = 213.6 * (1 - n / 3);
+
+  document.getElementById('rooms').innerHTML = list.map(a => {
+    const t = state.done[a.key];
+    return `<article class="room ${t ? 'done' : ''}" data-room="${a.task}">
+      <div class="top">
+        <div class="icon">${ICONS[a.task]}</div>
+        <div><h2>${TASKS[a.task]}</h2><div class="who"><span class="av">${esc(a.person.trim().charAt(0).toUpperCase() || '?')}</span>${esc(a.person)}</div></div>
+        <span class="pill">${t ? 'Готово' : 'Ждёт'}</span>
+      </div>
+      ${t ? `<div class="doneRow"><div class="t">Убрано<small>${fmtTime(t)}</small></div><button class="ghost" data-key="${a.key}">Отменить</button></div>`
+          : `<button class="btn" data-key="${a.key}">Отметить убранным</button>`}
+    </article>`;
+  }).join('');
+
+  const log = list.filter(a => state.done[a.key]).sort((a, b) => state.done[a.key].localeCompare(state.done[b.key]));
+  document.getElementById('history').innerHTML = log.length
+    ? log.map(a => `<li style="--c:${COLORS[a.task]}"><span><b>${esc(a.person)}</b>: ${TASKS[a.task].toLowerCase()}</span><time>${fmtTime(state.done[a.key])}</time></li>`).join('')
+    : '<li class="empty">Пока никто не отметился.</li>';
+  renderShame();
+}
+
+function renderShame() {
+  const by = {};
+  for (let w = 0; w < currentWeek(); w++) {
+    const s = new Date(+START_DATE + w * WEEK_MS), e = new Date(+s + 6 * DAY);
+    assignments(w).filter(a => !state.done[a.key]).forEach(a => {
+      (by[a.person] = by[a.person] || []).push(TASKS[a.task].toLowerCase() + ' (' + fmtDay(s) + ' – ' + fmtDay(e) + ')');
+    });
+  }
+  const rows = Object.entries(by).sort((a, b) => b[1].length - a[1].length);
+  const max = rows.length ? rows[0][1].length : 1;
+  const medals = ['🤡', '😬', '😅'];
+  document.getElementById('shame').innerHTML = rows.length
+    ? rows.map(([name, m], i) => `<div class="cul"><span class="rk">${medals[i] || '😶'}</span><b>${esc(name)}</b><span class="n">${m.length}</span>
+        <div class="bar"><i style="width:${m.length / max * 100}%"></i></div><span class="what">${m.map(esc).join('; ')}</span></div>`).join('')
+    : '<p class="empty">🏆 Позорников пока нет. Так держать!</p>';
+}
+
+function confetti() {
+  const cols = ['#F2A33A', '#3B8EDB', '#3FAE7D', '#FF8A80', '#fff'];
+  for (let i = 0; i < 48; i++) {
+    const c = document.createElement('i');
+    c.className = 'conf';
+    c.style.cssText = `left:${Math.random() * 100}vw;background:${cols[i % 5]};--x:${(Math.random() - .5) * 160}px;--r:${Math.random() * 720}deg;--d:${1.8 + Math.random() * 1.6}s`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3600);
+  }
+}
+
+document.getElementById('rooms').addEventListener('click', e => {
+  const btn = e.target.closest('button[data-key]');
+  if (!btn) return;
+  const k = btn.dataset.key, before = countDone(week);
+  if (state.done[k]) delete state.done[k]; else state.done[k] = new Date().toISOString();
+  save(); render();
+  if (before < 3 && countDone(week) === 3) confetti();
+});
+document.getElementById('prev').onclick = () => { week--; render(); };
+document.getElementById('next').onclick = () => { week++; render(); };
+document.getElementById('today').onclick = () => { week = currentWeek(); render(); };
+
+document.getElementById('names').innerHTML = state.names.map((n, i) => `<input data-i="${i}" value="${esc(n)}" aria-label="Имя ${i + 1}">`).join('');
+document.getElementById('names').addEventListener('input', e => { state.names[+e.target.dataset.i] = e.target.value; save(); render(); });
+
+render();
+</script>
+</body>
+</html>
