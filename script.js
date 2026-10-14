@@ -1,5 +1,6 @@
 let progress = document.getElementById('progress');
 
+
 let btnId = 0;
 
 
@@ -11,7 +12,7 @@ let colors = {
 
 let done = JSON.parse(localStorage.getItem('done')) || {};
 
-const neighbors = ['Danylo', 'Maxim', 'Volodya'];
+const neighbors = ['Данил', 'Максим', 'Владимир'];
 const tasks = ['Кухня', 'Ванная', 'Балкон и Коридор'];
 
 const startDate = new Date('2026-10-13');
@@ -44,11 +45,6 @@ function getAssignments(week) {
 };
 
 
-// cards buttons
-
-
-// week buttons
-
 document.getElementById('prev').addEventListener('click', () => {
   if (week === 0) return;
   week--;
@@ -59,6 +55,11 @@ document.getElementById('next').addEventListener('click', () => {
   week++;
   render();
 });
+
+document.getElementById('back-link').addEventListener('click', () => {
+    week = getWeekNumber();
+    render();
+})
 
 
 document.getElementById('rooms').addEventListener('click', (event) => {
@@ -78,6 +79,8 @@ document.getElementById('rooms').addEventListener('click', (event) => {
         })
 
 function render() {
+
+ 
     let container = document.getElementById('rooms');
     let doneCount = 0;
     const assignments = getAssignments(week);
@@ -91,17 +94,19 @@ function render() {
 
     const fmt = d => d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
 
-    document.getElementById('week-title').textContent = 'Week ' + week;
+    document.getElementById('week-title').textContent = 'Неделя ' + week;
     document.getElementById('week-range').textContent = fmt(start) + ' - ' + fmt(end);
 
     container.innerHTML = '';
+
+
+    
 
 
     for (const [person, task] of Object.entries(assignments)) {
         ++btnId;
         const color = colors[task];
         const card = document.createElement('div');
-
         const key = week + ':' + task;
         const time = done[key];
 
@@ -137,6 +142,27 @@ function render() {
     }
 
     progress.textContent = doneCount;
+
+
+
+
+    const doneList = document.getElementById('done-list');
+    doneList.innerHTML = '';
+
+    const entries = Object.entries(assignments).filter(([person, task]) => done[week + ':' + task]);
+
+    if (entries.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = 'Никто не отметился';
+        doneList.append(li);
+    }
+
+    for (const [person, task] of entries) {
+        const time = new Date(done[week + ':' + task]);
+        const li = document.createElement('li');
+        li.textContent = person + ' : ' + task.toLowerCase() + ', ' + time.toLocaleString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+        doneList.append(li)
+    }
 }
 
 render();
