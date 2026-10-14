@@ -1,3 +1,10 @@
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const app = initializeApp({ /* сюда вставь свой firebaseConfig */ });
+const db = getFirestore(app);
+
 let progress = document.getElementById('progress');
 
 
@@ -10,7 +17,13 @@ let colors = {
     'Balcony' : 'purple'
 }
 
-let done = JSON.parse(localStorage.getItem('done')) || {};
+let done = {};
+
+onSnapshot(collection(db, 'done'), (snapshot) => {
+  done = {};
+  snapshot.forEach(d => { done[d.id] = d.data().time; });
+  render();
+});
 
 const neighbors = ['Данил', 'Максим', 'Владимир'];
 const tasks = ['Кухня', 'Ванная', 'Балкон и Коридор'];
@@ -62,21 +75,18 @@ document.getElementById('back-link').addEventListener('click', () => {
 })
 
 
-document.getElementById('rooms').addEventListener('click', (event) => {
-            let button = event.target;
-            if (!button) return;
+document.getElementById('rooms').addEventListener('click', async (event) => {
+  let button = event.target;
+  if (!button) return;
 
-            const key = button.dataset.key;
+  const key = button.dataset.key;
 
-            if (done[key]) {
-                delete done[key];
-            } else {
-                done[key] = new Date().toISOString();
-            }
-
-            localStorage.setItem('done', JSON.stringify(done))
-            render();
-        })
+  if (done[key]) {
+    await deleteDoc(doc(db, 'done', key));
+  } else {
+    await setDoc(doc(db, 'done', key), { time: new Date().toISOString() });
+  }
+});
 
 function render() {
 
