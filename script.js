@@ -2,7 +2,16 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot }
   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
-const app = initializeApp({ /* сюда вставь свой firebaseConfig */ });
+const app = initializeApp({   
+  apiKey: "AIzaSyDTEqW-lkD5HMZ1bdHUO9YHQitDvVCcVAA",
+  authDomain: "cleanapartment-26d4a.firebaseapp.com",
+  projectId: "cleanapartment-26d4a",
+  storageBucket: "cleanapartment-26d4a.firebasestorage.app",
+  messagingSenderId: "58940990859",
+  appId: "1:58940990859:web:04888d4204daad1b50fb8e",
+  measurementId: "G-81WZ48XR1T" 
+});
+
 const db = getFirestore(app);
 
 let progress = document.getElementById('progress');
