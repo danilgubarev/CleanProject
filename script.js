@@ -1,16 +1,20 @@
+let progress = document.getElementById('progress');
+
+let btnId = 0;
+
+
 let colors = {
     'Bathroom' : 'green',
     'Kitchen' : 'yellow',
     'Balcony' : 'purple'
 }
 
-
-
+let done = JSON.parse(localStorage.getItem('done')) || {};
 
 const neighbors = ['Danylo', 'Maxim', 'Volodya'];
 const tasks = ['Кухня', 'Ванная', 'Балкон и Коридор'];
 
-const startDate = new Date('2026-10-05');
+const startDate = new Date('2026-10-13');
 
 function getWeekNumber(date = new Date()) {
 
@@ -40,6 +44,11 @@ function getAssignments(week) {
 };
 
 
+// cards buttons
+
+
+// week buttons
+
 document.getElementById('prev').addEventListener('click', () => {
   if (week === 0) return;
   week--;
@@ -52,8 +61,25 @@ document.getElementById('next').addEventListener('click', () => {
 });
 
 
+document.getElementById('rooms').addEventListener('click', (event) => {
+            let button = event.target;
+            if (!button) return;
+
+            const key = button.dataset.key;
+
+            if (done[key]) {
+                delete done[key];
+            } else {
+                done[key] = new Date().toISOString();
+            }
+
+            localStorage.setItem('done', JSON.stringify(done))
+            render();
+        })
+
 function render() {
     let container = document.getElementById('rooms');
+    let doneCount = 0;
     const assignments = getAssignments(week);
 
 
@@ -72,9 +98,15 @@ function render() {
 
 
     for (const [person, task] of Object.entries(assignments)) {
+        ++btnId;
         const color = colors[task];
-
         const card = document.createElement('div');
+
+        const key = week + ':' + task;
+        const time = done[key];
+
+        if (time) doneCount++;
+
         card.className = 'card'
 
         card.innerHTML = `
@@ -88,9 +120,13 @@ function render() {
                             </div>
                         </div>
                     </div>
-                <div class="status">Ждёт</div>
+                <div class="status">${time ? 'Готово' : 'Ждёт'}</div>
             </div>
-        <button class="btn ${color}">Отметить убранным</button>
+
+        <button class="btn ${color}" data-key="${key}">
+            ${time ? 'Отменить' : 'Отметить убранным'}
+        </button>
+
         `;
 
         card.querySelector('.card-title').textContent = task;
@@ -99,6 +135,8 @@ function render() {
 
         container.append(card);
     }
+
+    progress.textContent = doneCount;
 }
 
 render();
