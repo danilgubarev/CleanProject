@@ -35,7 +35,7 @@ onSnapshot(collection(db, 'done'), (snapshot) => {
 });
 
 const neighbors = ['Данил', 'Максим', 'Владимир'];
-const tasks = ['Кухня', 'Ванная', 'Балкон и Коридор'];
+const tasks = ['Кухня + Мусор', 'Ванная + Полотенца/тряпки', 'Балкон и Коридор + Сортировка'];
 
 const startDate = new Date('2026-10-13');
 
